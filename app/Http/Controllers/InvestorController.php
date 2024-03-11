@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use App\Models\User;
+use DataTables;
 class InvestorController extends Controller
 {
     public function showRegistrationForm()
@@ -14,24 +15,22 @@ class InvestorController extends Controller
 
     public function register(Request $request)
     {
+        
         // Validate the form data
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:investors|max:255',
-            'password' => 'required|string|min:8|max:255',
-            'address' => 'required|string|max:255',
+        $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6',
         ]);
 
-        // Create a new investor
-        // Investor::create([
-        //     'name' => $validatedData['name'],
-        //     'email' => $validatedData['email'],
-        //     'password' => bcrypt($validatedData['password']),
-        //     'address' => $validatedData['address'],
-        // ]);
-
-        // Redirect after successful registration
-        return redirect()->route('investors.login')->with('success', 'Registration successful. Please log in.');
+       $user = User::create([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => bcrypt($request->input('password')),
+            'role' => 'investor',
+        ]);
+        //dd($user);
+        return redirect()->route('home')->with('success', 'Investor created successfully.');
     }
 
     public function showLoginForm()
@@ -61,5 +60,12 @@ class InvestorController extends Controller
     {
         Auth::guard('investor')->logout();
         return redirect()->route('home');
+    }
+
+    public function getUsers()
+    {
+        $users = User::select(['id', 'name', 'email', 'created_at']);
+
+        return DataTables::of($users)->make(true);
     }
 }

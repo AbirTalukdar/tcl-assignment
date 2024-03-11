@@ -1,7 +1,8 @@
-
+@extends('layouts.app')
 
 @section('content')
 
+    <div class="container">
     <form action="{{ route('investors.register') }}" method="POST">
         @csrf
         <div class="form-group">
@@ -20,7 +21,8 @@
             <label for="address">Address</label>
             <input type="text" name="address" id="address" class="form-control">
         </div>
-        <button type="submit" class="btn btn-primary">Register</button>
+        <button type="submit" class="btn btn-primary mt-2">Register</button>
     </form>
+    </div>
 
 @endsection

@@ -23,8 +23,14 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // // Investor registration routes
-// Route::get('/register', [InvestorController::class, 'showRegistrationForm'])->name('investors.register');
-// Route::post('/register', [InvestorController::class, 'register']);
+
+
+// Route::middleware(['auth', 'role:admin'])->prefix('team')->group(function () {
+//     Route::get('/register', [InvestorController::class, 'showRegistrationForm'])->name('investors.register');
+//     Route::post('/register', [InvestorController::class, 'register']);
+// });
+    Route::get('/investor/register', [InvestorController::class, 'showRegistrationForm'])->name('investors.register');
+    Route::post('/investor/register', [InvestorController::class, 'register']);
 
 // // Investor login routes
 // Route::get('/login', [InvestorController::class, 'showLoginForm'])->name('investors.login');
