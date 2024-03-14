@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use DataTables;
+use Yajra\DataTables\DataTables;
 class InvestorController extends Controller
 {
     public function showRegistrationForm()
@@ -67,5 +67,25 @@ class InvestorController extends Controller
         $users = User::select(['id', 'name', 'email', 'created_at']);
 
         return DataTables::of($users)->make(true);
+    }
+
+    public function list(Request $request)
+    {
+        {
+            if ($request->ajax()) {
+                $data = User::select('*');
+                return Datatables::of($data)
+                        ->addIndexColumn()
+                        ->addColumn('action', function($row){
+         
+                            $btn = '<a href="javascript:void(0)" class="edit btn btn-primary btn-sm">View</a>';
+        
+                                return $btn;
+                        })
+                        ->rawColumns(['action'])
+                        ->make(true);
+            }
+            return view('userList');
+        }
     }
 }
