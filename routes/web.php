@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\InvestorController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\InvestmentController;
+use App\Http\Controllers\ErrorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,3 +52,6 @@ Route::middleware(['auth', 'role:investor'])->group(function () {
 });
 
 
+Route::fallback([ErrorController::class, 'handle400Error']);
+
+Route::fallback([ErrorController::class, 'handle500Error']);
