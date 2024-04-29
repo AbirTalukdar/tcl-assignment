@@ -1,101 +1,66 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>TCL ASSIGNMENT</title>
-    <!-- plugins:css -->
-    <link rel="stylesheet" href="">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/mdi/css/materialdesignicons.min.css')}}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.base.css')}}">
-    <!-- End layout styles -->
-    <link rel="stylesheet" href="{{ asset('assets/css/style.css')}}">
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico')}}" />
-    
-  </head>
-  <body>
-    <nav class="sidebar sidebar-offcanvas" id="sidebar">
-        <ul class="nav">
-            <li class="nav-item nav-profile">
-                <a href="#" class="nav-link">
-                    <div class="nav-profile-image">
-                        <img src="{{ asset('assets/images/faces/face1.jpg') }}" alt="profile">
-                        <span class="login-status online"></span>
-                    <!--change to offline or busy as needed-->
-                    </div>
-                    <div class="nav-profile-text d-flex flex-column">
-                        <span class="font-weight-bold mb-2">{{ Auth::user()->name }}</span>
-                        <span class="text-secondary text-small">{{ Auth::user()->role }}</span>
-                    </div>
-                        <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('home') }}">
-                    <span class="menu-title">Dashboard</span>
-                    <i class="mdi mdi-home menu-icon"></i>
-                </a>
-            </li>
-            @if(Auth::user()->role === 'admin')
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-                        <span class="menu-title">Investor</span>
-                        <i class="menu-arrow"></i>
-                        <i class="mdi mdi-crosshairs-gps menu-icon"></i>
-                    </a>
-                    <div class="collapse" id="ui-basic">
-                        <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> 
-                                <a class="nav-link" href="{{ route('investors.register') }}">Add</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="pages/ui-features/typography.html">List</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="pages/icons/mdi.html">
-                        <span class="menu-title">Icons</span>
-                        <i class="mdi mdi-contacts menu-icon"></i>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="pages/forms/basic_elements.html">
-                        <span class="menu-title">Forms</span>
-                        <i class="mdi mdi-format-list-bulleted menu-icon"></i>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="pages/charts/chartjs.html">
-                        <span class="menu-title">Charts</span>
-                        <i class="mdi mdi-chart-bar menu-icon"></i>
-                    </a>
-                </li>
-                
-                <li class="nav-item">
-                    <a class="nav-link" href="pages/tables/basic-table.html">
-                        <span class="menu-title">Tables</span>
-                        <i class="mdi mdi-table-large menu-icon"></i>
-                    </a>
-                </li>
-                <li class="nav-item sidebar-actions">
-                    <span class="nav-link">
-                        <div class="border-bottom">
-                            <h6 class="font-weight-normal mb-3">Projects</h6>
+<!-- Page Sidebar Start-->
+<div class="sidebar-wrapper">
+    <div>
+        <div class="logo-wrapper">
+            <a href="#">
+                <img class="img-fluid for-light" src="" alt="">
+                <img class="img-fluid for-dark" src="" alt="">
+            </a>
+            <div class="back-btn"><i class="fa fa-angle-left"></i></div>
+            <div class="toggle-sidebar"><i class="status_toggle middle sidebar-toggle" data-feather="grid"></i></div>
+        </div>
+        <div class="logo-icon-wrapper"><a href="#"><img class="img-fluid"
+                    src="" alt=""></a></div>
+        <nav class="sidebar-main">
+            <div class="left-arrow" id="left-arrow"><i data-feather="arrow-left"></i></div>
+            <div id="sidebar-menu">
+                <ul class="sidebar-links" id="simple-bar">
+                    <li class="back-btn"><a href="#"><img class="img-fluid"
+                                src="" alt=""></a>
+                        <div class="mobile-back text-end"><span>Back</span><i class="fa fa-angle-right ps-2"
+                                aria-hidden="true"></i></div>
+                    </li>
+                    <li class="sidebar-main-title">
+                        <div>
+                            <h6 class="">Welcome!</h6>
+                            <p class="">Greetings from</p>
                         </div>
-                        <a class="btn btn-block btn-lg btn-gradient-primary mt-4" href="{{ route('projects.create') }}">+ Add a project</a>
-                    </span>
-                </li>
-            @elseif(Auth::user()->role === 'investor')
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('projects.list') }}">
-                        <span class="menu-title">Project List</span>
-                        <i class="mdi mdi-table-large menu-icon"></i>
-                    </a>
-                </li>
-            @endif
-        </ul>
-    </nav>
-  </body>
+                    </li>
+                    <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav active"
+                            href="#"><i data-feather="home"> </i><span>Dashboard</span></a></li>
+                    <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav"
+                            href="{{ route('project.show') }}"><i data-feather="file"> </i><span>Project</span></a>
+                    </li>
+                    <!-- <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav"
+                            href="{{ route('client.show') }}"><i data-feather="users"> </i><span>Client</span></a>
+                    </li> -->
+                    <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#"><i
+                                data-feather="users"></i><span>Client</span></a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('client.show') }}">Client List</a></li>
+                            <li><a href="{{ route('client.show') }}">Assign Project</a></li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav"
+                            href="#"><i data-feather="dollar-sign"> </i><span>Cash</span></a>
+                    </li>
+                    <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav"
+                            href="#"><i data-feather="chevrons-down"> </i><span>Withdraw</span></a>
+                    </li>
+                    <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav"
+                            href="#"><i data-feather="trending-up"> </i><span>Revenue</span></a>
+                    </li>
+                    <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#"><i
+                                data-feather="file-text"></i><span>Settings</span></a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="#">User Type</a></li>
+                            
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="right-arrow" id="right-arrow"><i data-feather="arrow-right"></i></div>
+        </nav>
+    </div>
+</div>
+<!-- Page Sidebar Ends-->

@@ -2,101 +2,103 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Project;
-use App\Models\Investment;
-use Yajra\DataTables\DataTables;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Http\JsonResponse;
 
 class ProjectController extends Controller
 {
-    public function index()
+
+    public function show()
     {
-        $projects = Project::all();
-        return view('projects.index', compact('projects'));
+        return view('project.index');
+    }
+
+    public function list()
+    {
+        $project = Project::all();
+        return datatables()->of($project)
+           
+            ->addColumn('status', function (Project $project){
+                if ($project->status === 'active') {
+                    return '<label class="btn btn-success">Active</label>';
+                }
+                return '<label class="btn btn-danger">Inactive</label>';
+            })
+            ->setRowAttr([
+                'align'=>'center',
+            ])
+            ->rawColumns(['status'])
+            ->make(true);
     }
 
     public function create()
     {
-        return view('projects.create');
+        return view('project.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        //dd($request->all());
-        $request->validate([
-            'name' => 'required',
-            'description' => 'required',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date',
+        $validated = $this->validate($request, [
+            'vendor_firstName' => 'required|string|max:255',
+            'vendor_lastName' => 'required|string|max:255',
+            'vendor_phone' => 'required|string|max:255',
+            'vendor_shop_name' => 'required|string|max:255',
+            'status' => 'required|string|max:45',
         ]);
 
-        Project::create($request->all());
-
-        return redirect()->route('home');
-    }
-
-    public function show(Project $project)
-    {
-        return view('projects.show', compact('project'));
-    }
-
-    public function edit(Project $project)
-    {
-        return view('projects.edit', compact('project'));
-    }
-
-    public function update(Request $request, Project $project)
-    {
-        $request->validate([
-            'name' => 'required',
-            'description' => 'required',
-            'duration' => 'required|date',
+        Project::query()->create([
+            'vendor_firstName' => $validated['vendor_firstName'],
+            'vendor_lastName' => $validated['vendor_lastName'],
+            'vendor_phone' => $validated['vendor_phone'],
+            'vendor_shop_name' => $validated['vendor_shop_name'],
+            'status' => $validated['status'],
         ]);
 
-        $project->update($request->all());
-
-        return redirect()->route('projects.index');
+        Session::flash('success', 'Project Created Successfully!');
+        return redirect()->route('project.show');
     }
 
-    public function destroy(Project $project)
+    public function edit($id)
     {
-        $project->delete();
-
-        return redirect()->route('projects.index');
+        $project = Project::query()->where('id', $id)->first();
+        return view('project.edit', compact( 'project'));
     }
 
-    public function investors($projectId)
+    public function update(Request $request, $id): RedirectResponse
     {
-        $project = Project::findOrFail($projectId);
-        $investors = Investment::where('project_id', $projectId)
-        ->with('user') // Assuming you have a relationship set up with the User model
-        ->get();
+        $validated = $this->validate($request, [
+            'vendor_firstName' => 'nullable|string|max:255',
+            'vendor_lastName' => 'nullable|string|max:255',
+            'vendor_phone' => 'nullable|string|max:255',
+            'vendor_shop_name' => 'nullable|string|max:255',
+            'status' => 'nullable|string|max:45',
+        ]);
 
-    return view('investors.investors', compact('project', 'investors'));
-    }
-
-    public function projectList(Request $request)
-    {
-        {
-            if ($request->ajax()) {
-                $data = Project::select('*');
-                return Datatables::of($data)
-                        ->addIndexColumn()
-                        ->addColumn('action', function($row){
-         
-                            if (Auth::check() && Auth::user()->role === 'investor') {
-                                $button = '<button type="button" class="btn btn-primary invest-btn" data-project-id="'.$row->id.'">Invest</button>';
-                                return $button;
-                            } else {
-                                $button = '<a href="'.route('projects.investors', $row->id).'" class="btn btn-primary">Invest Details</a>';
-                                return $button;
-                            }
-                        })
-                        ->rawColumns(['action'])
-                        ->make(true);
-            }
-            return view('projects.projectList');
+        $project = Project::query()->where('id', $id)->first();
+        if(!empty($project)) {
+            $project->update([
+                'vendor_firstName' => $validated['vendor_firstName'],
+                'vendor_lastName' => $validated['vendor_lastName'],
+                'vendor_phone' => $validated['vendor_phone'],
+                'vendor_shop_name' => $validated['vendor_shop_name'],
+                'status' => $validated['status'],
+            ]);
         }
+
+        Session::flash('success', 'Project Updated Successfully!');
+        return redirect()->route('project.show');
     }
+
+    public function delete(Request $request): JsonResponse
+    {
+        $project = Project::query()->where('id', $request->id)->first();
+        If (!empty($project)) {
+            $project->delete();
+        }
+        return response()->json();
+    }
+
 }

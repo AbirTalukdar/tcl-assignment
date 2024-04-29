@@ -4,23 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class Project extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable;
+
+    use HasFactory;
+    protected $table ='projects';
+    protected $primaryKey='id';
+    public $timestamps = true;
 
     protected $fillable = [
         'name',
         'description',
         'start_date',
-        'end_date'
+        'end_date',
+        'status',
     ];
-
-
-    public function investors()
-    {
-        return $this->belongsToMany(Investor::class);
-    }
 }

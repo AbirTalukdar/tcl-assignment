@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\InvestorController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvestmentController;
 use App\Http\Controllers\ErrorController;
 
@@ -23,12 +24,37 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/projects/list', [ProjectController::class, 'projectList'])->name('projects.list');
-// // Investor registration routes
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+//Route::get('/projects/list', [ProjectController::class, 'projectList'])->name('projects.list');
+// Investor registration routes
 
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
+    // Dashboard Route
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+    // Project Route
+    Route::group(['prefix' => 'project', 'as' => 'project.'], function () {
+        Route::get('/show', [ProjectController::class, 'show'])->name('show');
+        Route::post('/list', [ProjectController::class, 'list'])->name('list');
+        Route::get('create', [ProjectController::class, 'create'])->name('create');
+        Route::post('store', [ProjectController::class, 'store'])->name('store');
+        Route::get('edit/{id}', [ProjectController::class, 'edit'])->name('edit');
+        Route::post('update/{id}', [ProjectController::class, 'update'])->name('update');
+        Route::post('delete', [ProjectController::class, 'delete'])->name('delete');
+    });
+
+    // Client Route
+    Route::group(['prefix' => 'client', 'as' => 'client.'], function () {
+        Route::get('/show', [ClientController::class, 'show'])->name('show');
+        Route::post('/list', [ClientController::class, 'list'])->name('list');
+        Route::get('create', [ClientController::class, 'create'])->name('create');
+        Route::post('store', [ClientController::class, 'store'])->name('store');
+        Route::get('edit/{id}', [ClientController::class, 'edit'])->name('edit');
+        Route::post('update/{id}', [ClientController::class, 'update'])->name('update');
+        Route::post('delete', [ClientController::class, 'delete'])->name('delete');
+    });
+
     Route::get('/investor/register', [InvestorController::class, 'showRegistrationForm'])->name('investors.register');
     Route::post('/investor/register', [InvestorController::class, 'register']);
 

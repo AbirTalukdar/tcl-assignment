@@ -1,87 +1,69 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>TCL ASSIGNMENT</title>
-    <!-- plugins:css -->
-    <link rel="stylesheet" href="">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/mdi/css/materialdesignicons.min.css')}}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.base.css')}}">
-    <!-- End layout styles -->
-    <link rel="stylesheet" href="{{ asset('assets/css/style.css')}}">
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico')}}" />
-    
-  </head>
-
+@include('layouts.partials.header')
 <body>
-<div class="container-scroller">
-    <div class="container-fluid page-body-wrapper full-page-wrapper">
-        <div class="content-wrapper d-flex align-items-center auth">
-            <div class="row flex-grow">
-                <div class="col-lg-4 mx-auto">
-                    <div class="auth-form-light text-left p-5">
-                        <div class="brand-logo">
-                            <!-- <img src="../../assets/images/logo.svg"> -->
-                        </div>
-                        <h4>Hello! Let's get started</h4>
-                        <h6 class="font-weight-light">Sign in to continue.</h6>
-                        <form method="POST" action="{{ route('login') }}" class="pt-3">
-                            @csrf
-                            <div class="form-group">
-                                <input type="email" class="form-control form-control-lg @error('email') is-invalid @enderror" value="{{ old('email') }}" id="email" name="email" placeholder="Email Address" required autocomplete="email" autofocus>
-                                @error('email')
+    <!-- login page start-->
+    <div class="container-fluid p-0">
+        <div class="row m-0">
+            <div class="col-12 p-0">
+                <div class="login-card login-dark">
+                    <div>
+
+                        <div class="login-main">
+                            <div>
+                                <!-- <a class="logo" href="#">
+                                    <img class="img-fluid for-light" src="" alt="looginpage">
+                                    <img class="img-fluid for-dark" src="" alt="looginpage">
+                                </a> -->
+                            </div>
+                            <form class="theme-form" action="{{ route('login') }}" method="POST">
+                                @csrf
+                                <h4>Sign in to account</h4>
+                                <p>Enter your email & password to login</p>
+                                <div class="form-group">
+                                    <label class="col-form-label">Email Address</label>
+                                    <input class="form-control @error('email') is-invalid @enderror" type="email" name="email" placeholder="test@gmail.com" value="{{ old('email') }}" required>
+                                    @error('email')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                                @enderror
-                            </div>
-                            <div class="form-group">
-                                <input type="password" class="form-control form-control-lg @error('password') is-invalid @enderror" id="password" name="password" placeholder="Password" required autocomplete="current-password">
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                            <div class="mt-3">
-                                <button type="submit" class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn">SIGN IN</button>
-                            </div>
-                            <div class="my-2 d-flex justify-content-between align-items-center">
-                                <div class="form-check">
-                                    <label class="form-check-label text-muted">
-                                        <input type="checkbox" class="form-check-input" name="remember" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}> Keep me signed in
-                                    </label>
+                                    @enderror
                                 </div>
-                                <a href="{{ route('password.request') }}" class="auth-link text-black">Forgot password?</a>
-                            </div>
-                            <div class="mb-2">
-                                <button type="button" class="btn btn-block btn-facebook auth-form-btn">
-                                    <i class="mdi mdi-facebook me-2"></i>Connect using Facebook
-                                </button>
-                            </div>
-                            <div class="text-center mt-4 font-weight-light"> Don't have an account? <a href="{{ route('register') }}" class="text-primary">Create</a>
-                            </div>
-                        </form>
+                                <div class="form-group">
+                                    <label class="col-form-label">Password</label>
+                                    <div class="form-input position-relative">
+                                        <input class="form-control @error('password') is-invalid @enderror" type="password" name="password" placeholder="*********" required>
+                                        <div class="show-hide"><span class="show"></span></div>
+                                        @error('password')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group mb-0">
+                                    <div class="checkbox p-0">
+                                        <input id="checkbox1" type="checkbox" name="remember" value="true">
+                                        <label class="text-muted" for="checkbox1">Remember password</label>
+                                    </div>
+                                    <a class="link" href="forget-password.html">Forgot password?</a>
+                                    <div class="text-end mt-3">
+                                        <button class="btn btn-primary btn-block w-100" type="submit">Sign in</button>
+                                    </div>
+                                </div>
+                               <h6 class="text-muted mt-4 or">Or Sign in with</h6>
+                                <div class="social mt-4">
+                                  <div class="btn-showcase"><a class="btn btn-light" href="https://www.linkedin.com/login" target="_blank"><i class="txt-linkedin" data-feather="linkedin"></i> LinkedIn </a><a class="btn btn-light" href="https://twitter.com/login?lang=en" target="_blank"><i class="txt-twitter" data-feather="twitter"></i>twitter</a><a class="btn btn-light" href="https://www.facebook.com/" target="_blank"><i class="txt-fb" data-feather="facebook"></i>facebook</a></div>
+                                </div>
+                       <p class="mt-4 mb-0 text-center">Don't have account?<a class="ms-2" href="sign-up.html">Create Account</a></p>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- content-wrapper ends -->
     </div>
-    <!-- page-body-wrapper ends -->
-</div>
-<!-- container-scroller -->
-<!-- plugins:js -->
-<script src="{{ asset('assets/vendors/js/vendor.bundle.base.js')}}"></script>
-<!-- endinject -->
-<!-- Plugin js for this page -->
-<!-- End plugin js for this page -->
-<!-- inject:js -->
-<script src="{{ asset('assets/js/off-canvas.js')}}"></script>
-<script src="{{ asset('assets/js/hoverable-collapse.js')}}"></script>
-<script src="{{ asset('assets/js/misc.js')}}"></script>
-<!-- endinject -->
+
+    @include('layouts.partials.scripts')
 </body>
 </html>
