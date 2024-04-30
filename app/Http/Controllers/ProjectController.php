@@ -67,20 +67,16 @@ class ProjectController extends Controller
     public function update(Request $request, $id): RedirectResponse
     {
         $validated = $this->validate($request, [
-            'vendor_firstName' => 'nullable|string|max:255',
-            'vendor_lastName' => 'nullable|string|max:255',
-            'vendor_phone' => 'nullable|string|max:255',
-            'vendor_shop_name' => 'nullable|string|max:255',
+            'name' => 'nullable|string|max:255',
+            'description' => 'nullable|string|max:255',
             'status' => 'nullable|string|max:45',
         ]);
 
         $project = Project::query()->where('id', $id)->first();
         if(!empty($project)) {
             $project->update([
-                'vendor_firstName' => $validated['vendor_firstName'],
-                'vendor_lastName' => $validated['vendor_lastName'],
-                'vendor_phone' => $validated['vendor_phone'],
-                'vendor_shop_name' => $validated['vendor_shop_name'],
+                'name' => $validated['name'],
+                'description' => $validated['description'],
                 'status' => $validated['status'],
             ]);
         }

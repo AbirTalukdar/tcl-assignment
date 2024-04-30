@@ -38,24 +38,14 @@
                                 <div class="row ">
                                     <div class="col-md-8">
                                         <div class="mb-3">
-                                            <label for="vendor_firstName">First Name</label>
-                                            <input class="form-control" id="vendor_firstName" name="vendor_firstName" type="text" placeholder="Vendor First Name" value="{{ @$vendor->vendor_firstName }}" required>
-                                            <span class="text-danger"> <b>{{  $errors->first('vendor_firstName') }}</b></span>
+                                            <label for="name">Project Name</label>
+                                            <input class="form-control" id="name" name="name" type="text" placeholder="Project Name" value="{{ @$project->name }}" required>
+                                            <span class="text-danger"> <b>{{  $errors->first('name') }}</b></span>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="vendor_lastName">Last Name</label>
-                                            <input class="form-control" id="vendor_lastName" name="vendor_lastName" type="text" placeholder="Vendor Last Name" value="{{ @$vendor->vendor_lastName }}" required>
-                                            <span class="text-danger"> <b>{{  $errors->first('vendor_lastName') }}</b></span>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="vendor_phone">Phone Number</label>
-                                            <input class="form-control" id="vendor_phone" name="vendor_phone" type="text" placeholder="Vendor Phone Number" value="{{ @$vendor->vendor_phone }}" required>
-                                            <span class="text-danger"> <b>{{  $errors->first('vendor_phone') }}</b></span>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="vendor_shop_name">Shop Name</label>
-                                            <input class="form-control" id="vendor_shop_name" name="vendor_shop_name" type="tel" placeholder="Vendor Shop Name" value="{{ @$vendor->vendor_shop_name }}" required>
-                                            <span class="text-danger"> <b>{{  $errors->first('vendor_shop_name') }}</b></span>
+                                            <label for="description">Project Description</label>
+                                            <textarea class="form-control" id="description" name="description" placeholder="Project Details" required>{{ @$project->description }} </textarea>
+                                            <span class="text-danger"><b>{{  $errors->first('description') }}</b></span>
                                         </div>
                                         <div class="mb-3">
                                             <label for="status">Vendor Status</label>
