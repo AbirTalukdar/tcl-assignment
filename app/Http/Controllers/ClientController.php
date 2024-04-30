@@ -60,33 +60,29 @@ class ClientController extends Controller
     public function update(Request $request, $id): RedirectResponse
     {
         $validated = $this->validate($request, [
-            'vendor_firstName' => 'nullable|string|max:255',
-            'vendor_lastName' => 'nullable|string|max:255',
-            'vendor_phone' => 'nullable|string|max:255',
-            'vendor_shop_name' => 'nullable|string|max:255',
-            'status' => 'nullable|string|max:45',
+            'name' => 'nullable|string|max:255',
+            'email' => 'nullable|string|max:255',
+            'password' => 'nullable|string|max:255'
         ]);
 
-        $project = Project::query()->where('id', $id)->first();
-        if(!empty($project)) {
-            $project->update([
-                'vendor_firstName' => $validated['vendor_firstName'],
-                'vendor_lastName' => $validated['vendor_lastName'],
-                'vendor_phone' => $validated['vendor_phone'],
-                'vendor_shop_name' => $validated['vendor_shop_name'],
-                'status' => $validated['status'],
+        $client = User::query()->where('id', $id)->first();
+        if(!empty($client)) {
+            $client->update([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'password' => $validated['password'],
             ]);
         }
 
-        Session::flash('success', 'Project Updated Successfully!');
-        return redirect()->route('project.show');
+        Session::flash('success', 'Client Record Updated Successfully!');
+        return redirect()->route('client.show');
     }
 
     public function delete(Request $request): JsonResponse
     {
-        $project = Project::query()->where('id', $request->id)->first();
-        If (!empty($project)) {
-            $project->delete();
+        $client = User::query()->where('id', $request->id)->first();
+        If (!empty($client)) {
+            $client->delete();
         }
         return response()->json();
     }

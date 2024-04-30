@@ -38,11 +38,11 @@
                                 data-feather="users"></i><span>Client</span></a>
                         <ul class="sidebar-submenu">
                             <li><a href="{{ route('client.show') }}">Client List</a></li>
-                            <li><a href="{{ route('client.show') }}">Assign Project</a></li>
+                            <li><a href="{{ route('assign.show') }}">Assign Project</a></li>
                         </ul>
                     </li>
                     <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav"
-                            href="#"><i data-feather="dollar-sign"> </i><span>Cash</span></a>
+                            href="{{ route('cash.show') }}"><i data-feather="dollar-sign"> </i><span>Cash</span></a>
                     </li>
                     <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav"
                             href="#"><i data-feather="chevrons-down"> </i><span>Withdraw</span></a>

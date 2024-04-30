@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\AssignController;
+use App\Http\Controllers\CashController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvestmentController;
@@ -55,11 +57,33 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::post('delete', [ClientController::class, 'delete'])->name('delete');
     });
 
-    Route::get('/investor/register', [InvestorController::class, 'showRegistrationForm'])->name('investors.register');
-    Route::post('/investor/register', [InvestorController::class, 'register']);
+    // Assign Project to Client
+    Route::group(['prefix' => 'assign', 'as' => 'assign.'], function () {
+        Route::get('/show', [AssignController::class, 'show'])->name('show');
+        Route::post('/list', [AssignController::class, 'list'])->name('list');
+        Route::get('create', [AssignController::class, 'create'])->name('create');
+        Route::post('store', [AssignController::class, 'store'])->name('store');
+        Route::get('edit/{id}', [AssignController::class, 'edit'])->name('edit');
+        Route::post('update/{id}', [AssignController::class, 'update'])->name('update');
+        Route::post('delete', [AssignController::class, 'delete'])->name('delete');
+    });
+
+    // Cash
+    Route::group(['prefix' => 'cash', 'as' => 'cash.'], function () {
+        Route::get('/show', [CashController::class, 'show'])->name('show');
+        Route::post('/list', [CashController::class, 'list'])->name('list');
+        Route::get('create', [CashController::class, 'create'])->name('create');
+        Route::post('store', [CashController::class, 'store'])->name('store');
+        Route::get('edit/{id}', [CashController::class, 'edit'])->name('edit');
+        Route::post('update/{id}', [CashController::class, 'update'])->name('update');
+        Route::post('delete', [CashController::class, 'delete'])->name('delete');
+    });
+
+    Route::get('/investor/register', [ClientController::class, 'showRegistrationForm'])->name('investors.register');
+    Route::post('/investor/register', [ClientController::class, 'register']);
 
     //List Route
-    Route::get('/user/list', [InvestorController::class, 'list'])->name('list');
+    Route::get('/user/list', [ClientController::class, 'list'])->name('list');
 
     //Project Route
     Route::get('/projects', [ProjectController::class, 'index']);

@@ -42,18 +42,14 @@ class ProjectController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $this->validate($request, [
-            'vendor_firstName' => 'required|string|max:255',
-            'vendor_lastName' => 'required|string|max:255',
-            'vendor_phone' => 'required|string|max:255',
-            'vendor_shop_name' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
             'status' => 'required|string|max:45',
         ]);
 
         Project::query()->create([
-            'vendor_firstName' => $validated['vendor_firstName'],
-            'vendor_lastName' => $validated['vendor_lastName'],
-            'vendor_phone' => $validated['vendor_phone'],
-            'vendor_shop_name' => $validated['vendor_shop_name'],
+            'name' => $validated['name'],
+            'description' => $validated['description'],
             'status' => $validated['status'],
         ]);
 

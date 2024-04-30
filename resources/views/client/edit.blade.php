@@ -52,21 +52,6 @@
                                             <input class="form-control" id="password" name="password" type="password" placeholder="Password" value="{{ @$client->password }}">
                                             <span class="text-danger"><b>{{ $errors->first('password') }}</b></span>
                                         </div>
-                                        <div class="mb-3">
-                                            <label for="vendor_lastName">Last Name</label>
-                                            <input class="form-control" id="vendor_lastName" name="vendor_lastName" type="text" placeholder="Vendor Last Name" value="{{ @$client->vendor_lastName }}" required>
-                                            <span class="text-danger"> <b>{{  $errors->first('vendor_lastName') }}</b></span>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="vendor_phone">Phone Number</label>
-                                            <input class="form-control" id="vendor_phone" name="vendor_phone" type="text" placeholder="Vendor Phone Number" value="{{ @$client->vendor_phone }}" required>
-                                            <span class="text-danger"> <b>{{  $errors->first('vendor_phone') }}</b></span>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="vendor_shop_name">Shop Name</label>
-                                            <input class="form-control" id="vendor_shop_name" name="vendor_shop_name" type="tel" placeholder="Vendor Shop Name" value="{{ @$client->vendor_shop_name }}" required>
-                                            <span class="text-danger"> <b>{{  $errors->first('vendor_shop_name') }}</b></span>
-                                        </div>
                                         <div class="text-end btn-mb">
                                             <button class="btn btn-secondary" type="button"><a class="text-white" href="{{ route('client.show') }}">Cancel</a></button>
                                             <button class="btn btn-primary" type="submit">Update</button>
