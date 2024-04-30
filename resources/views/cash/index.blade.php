@@ -62,7 +62,8 @@
                     {title: 'ID', data: 'id', name: 'id', className: "text-center", orderable: true, searchable: true},
                     {title: 'Project Name', data: 'project_name', name: 'project_name', className: "text-center", orderable: true, searchable: true},
                     {title: 'Client Name', data: 'client_name', name: 'client_name', className: "text-center", orderable: true, searchable: true},
-                    {title: 'Client Email', data: 'client_email', name: 'client_email', className: "text-center", orderable: true, searchable: true},
+                    {title: 'Invest Amount', data: 'amount', name: 'amount', className: "text-center", orderable: true, searchable: true},
+                    {title: 'Invest Date', data: 'invest_date', name: 'invest_date', className: "text-center", orderable: true, searchable: true},
                     {title: 'Action', className: "text-center", data: function (data) {
                             return '<a title="edit" class="btn btn-warning btn-sm" data-panel-id="' + data.id  + '" onclick="editCash(this)"><i class="fa fa-edit"></i></a>'+
                                 ' <a title="delete" class="btn btn-danger btn-sm" data-panel-id="' + data.id + '" onclick="deleteCash(this)"><i class="fa fa-trash"></i></a>';
@@ -72,13 +73,13 @@
             });
         });
 
-        function editAssignProject(x) {
+        function editCash(x) {
             let btn = $(x).data('panel-id');
             let url = '{{route("cash.edit", ":id") }}';
             window.location.href = url.replace(':id', btn);
         }
 
-        function deleteAssignProject(x) {
+        function deleteCash(x) {
             let id = $(x).data('panel-id');
             if(!confirm("Delete This Assigned Project?")){
                 return false;

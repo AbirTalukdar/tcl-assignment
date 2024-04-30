@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\AssignProject;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Session;
@@ -95,6 +96,26 @@ class ProjectController extends Controller
             $project->delete();
         }
         return response()->json();
+    }
+
+    public function getProjectsByClient(Request $request)
+    {
+        //dd($request->all());
+        // $clientId = $request->input('clientId');
+        // $projects = Project::where('id', $clientId)->get();
+        
+        // return response()->json(['projects' => $projects]);
+         // Get the client ID from the request
+        $clientId = $request->input('clientId');
+
+        // Fetch project IDs associated with the client from the client_assign_project table
+        $projectIds = AssignProject::where('clientId', $clientId)->pluck('projectId');
+
+        // Retrieve projects associated with the fetched project IDs
+        $projects = Project::whereIn('id', $projectIds)->get();
+
+        // Return the projects as JSON response
+        return response()->json($projects);
     }
 
 }

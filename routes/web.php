@@ -79,6 +79,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::post('delete', [CashController::class, 'delete'])->name('delete');
     });
 
+    Route::get('/projects/by-client', [ProjectController::class, 'getProjectsByClient'])->name('projects.by_client');
+
     Route::get('/investor/register', [ClientController::class, 'showRegistrationForm'])->name('investors.register');
     Route::post('/investor/register', [ClientController::class, 'register']);
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Project;
 use App\Models\AssignProject;
+use App\Models\CashInvestment;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Session;
@@ -20,19 +21,19 @@ class CashController extends Controller
 
     public function list()
     {
-        $assignedProjects = AssignProject::with(['project', 'client'])->get();
-        return datatables()->of($assignedProjects)
-            ->addColumn('project_name', function ($assignedProject) {
-                return $assignedProject->project->name;
+        $cashInvestments = CashInvestment::with(['project', 'client'])->get();
+        return datatables()->of($cashInvestments)
+            ->addColumn('project_name', function ($cashInvestment) {
+                return $cashInvestment->project->name;
             })
-            ->addColumn('client_name', function ($assignedProject) {
-                return $assignedProject->client->name;
+            ->addColumn('client_name', function ($cashInvestment) {
+                return $cashInvestment->client->name;
             })
-            ->addColumn('client_email', function ($assignedProject) {
-                return $assignedProject->client->email;
+            ->addColumn('client_email', function ($cashInvestment) {
+                return $cashInvestment->client->email;
             })
             ->setRowAttr([
-                'align'=>'center',
+                'align' => 'center',
             ])
             ->make(true);
     }
@@ -44,42 +45,57 @@ class CashController extends Controller
         return view('cash.create', compact('projects', 'clients'));
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
-        $validated = $this->validate($request, [
-            'projectId' => 'required|exists:projects,id',
+        // Validate the incoming request data
+        $validatedData = $request->validate([
             'clientId' => 'required|exists:users,id',
+            'projectId' => 'required|exists:projects,id',
+            'cashAmount' => 'required|array',
+            'cashAmount.*' => 'numeric',
+            'cashDate' => 'required|array',
+            'cashDate.*' => 'date',
         ]);
 
-        
-        $assignment = AssignProject::create([
-            'projectId' => $validated['projectId'],
-            'clientId' => $validated['clientId'],
-        ]);
+        // Create cash investment records for each cash amount and date
+        foreach ($validatedData['cashAmount'] as $key => $amount) {
+            $cashInvestment = new CashInvestment();
+            $cashInvestment->projectId = $validatedData['projectId'];
+            $cashInvestment->clientId = $validatedData['clientId'];
+            $cashInvestment->amount = $amount;
+            $cashInvestment->invest_date = $validatedData['cashDate'][$key];
+            $cashInvestment->save();
+        }
 
-        Session::flash('success', 'Assigned Project To Client Successfully!');
+        // Optionally, you can return a response or redirect the user
         return redirect()->route('cash.show');
     }
-
     public function edit($id)
     {
-        $assignedProject = AssignProject::findOrFail($id);
-        $projects = Project::all(); // Fetch all projects
-        $clients = User::where('role', 'investor')->get(); // Fetch investors as clients
-        return view('cash.edit', compact('assignedProject', 'projects', 'clients'));
+        $cashInvestment = CashInvestment::findOrFail($id);
+        $projects = Project::all();
+        $clients = User::where('role', 'investor')->get();
+        return view('cash.edit', compact('cashInvestment', 'projects', 'clients'));
     }
 
     public function update(Request $request, $id): RedirectResponse
     {
         $validated = $request->validate([
-            'projectId' => 'required|exists:projects,id', // Ensure projectId exists in the projects table
-            'clientId' => 'required|exists:users,id' // Ensure clientId exists in the users table
+            'clientId' => 'required|exists:users,id',
+            'projectId' => 'required|exists:projects,id',
+            'amount' => 'required|numeric',
+            'investDate' => 'required|date',
         ]);
-
-        $assignedProject = AssignProject::findOrFail($id);
-        $assignedProject->update($validated);
-
-        Session::flash('success', 'Assigned Project Updated Successfully!');
+    
+        $cashInvestment = CashInvestment::findOrFail($id);
+        $cashInvestment->update([
+            'client_id' => $validated['clientId'],
+            'project_id' => $validated['projectId'],
+            'amount' => $validated['amount'],
+            'invest_date' => $validated['investDate'],
+        ]);
+    
+        Session::flash('success', 'Cash Investment Updated Successfully!');
         return redirect()->route('cash.show');
     }
 
